@@ -5,7 +5,7 @@ Steps to run the flask app:
 1. Make sure you have python3 installed
 2. cd into the `DB_Project` folder
 3. Create a virtual environtment with python3 -m venv [your env name]
-4. Acticate the virtual environment with `source c2_env/bin/activate`
+4. Acticate the virtual environment with `source [your env name]/bin/activate`
 5. You can exit the virtual environtment with `deactivate`
 6. Install the dependencies with `pip3 install -r requirements.txt`
 
