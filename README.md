@@ -11,7 +11,7 @@ Steps to run the flask app:
 
 Creating database connecting to our flask app:
 1. Using mysqlWorkbench or any other application, create a database called `FlaskDemo`
-2. copy the create table queries in our `DB_Project` folder and use them to create tables in `FlaskDemo`
+2. copy the create table queries in `DB_Project/FlaskDemo.sql` folder and use them to create tables in `FlaskDemo`
 
 Running the flask app:
 - type the following commands one by one:
