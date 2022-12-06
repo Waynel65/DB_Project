@@ -1,0 +1,30 @@
+<html>
+<head>
+</head>
+<body>
+    <h1> Welcome {{username}} </h1>
+    <button> Post New Recipe</button>
+    <button> Search Recipes </button>
+
+    <h3> My Recipes </h3>
+    <table>
+        <th>RecipeID</th>
+        <th>Title</th>
+        <th>Number of Servings</th>
+
+    {% for line in recipes %}
+        <tr>
+            <td>{{line.recipeID}}</td>
+            <td>{{line.title}}</td>
+            <td>{{line.numServings}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <button> Join Group </button>
+
+<a href="/">Go back</a>
+</body>
+
+
+</html>

@@ -87,75 +87,116 @@ def loginAuth():
         error = 'Invalid login or username'
         return render_template('login.html', error=error)
 
-#Authenticates the register
-# @app.route('/registerAuth', methods=['GET', 'POST'])
-# def registerAuth():
-#     #grabs information from the forms
-#     username = request.form['username']
-#     password = request.form['password']
-
-#     #cursor used to send queries
-#     cursor = conn.cursor()
-#     #executes query
-#     query = 'SELECT * FROM user WHERE username = %s'
-#     cursor.execute(query, (username))
-#     #stores the results in a variable
-#     data = cursor.fetchone()
-#     #use fetchall() if you are expecting more than 1 data row
-#     error = None
-#     if(data):
-#         #If the previous query returns data, then user exists
-#         error = "This user already exists"
-#         return render_template('register.html', error = error)
-#     else:
-#         ins = 'INSERT INTO user VALUES(%s, %s)'
-#         cursor.execute(ins, (username, password))
-#         conn.commit()
-#         cursor.close()
-#         return render_template('index.html')
-
+# Authenticates the register
 @app.route('/registerAuth', methods=['GET', 'POST'])
 def registerAuth():
+    #grabs information from the forms
     username = request.form['username']
     password = request.form['password']
 
-    
+    #cursor used to send queries
+    cursor = conn.cursor()
+    #executes query
+    query = 'SELECT * FROM user WHERE username = %s'
+    cursor.execute(query, (username))
+    #stores the results in a variable
+    data = cursor.fetchone()
+    #use fetchall() if you are expecting more than 1 data row
+    error = None
+    if(data):
+        #If the previous query returns data, then user exists
+        error = "This user already exists"
+        return render_template('register.html', error = error)
+    else:
+        ins = 'INSERT INTO user VALUES(%s, %s)'
+        cursor.execute(ins, (username, password))
+        conn.commit()
+        cursor.close()
+        return render_template('index.html')
 
 
-@app.route('/home')
-def home():
-    user = session['username']
-    cursor = conn.cursor();
-    query = 'SELECT ts, blog_post FROM blog WHERE username = %s ORDER BY ts DESC'
-    cursor.execute(query, (user))
-    data = cursor.fetchall()
-    cursor.close()
-    return render_template('home.html', username=user, posts=data)
+# @app.route('/home')
+# def home():
+#     user = session['username']
+#     cursor = conn.cursor();
+#     query = 'SELECT ts, blog_post FROM blog WHERE username = %s ORDER BY ts DESC'
+#     cursor.execute(query, (user))
+#     data = cursor.fetchall()
+#     cursor.close()
+#     return render_template('home.html', username=user, posts=data)
 
-        
-@app.route('/post', methods=['GET', 'POST'])
-def post():
+@app.route('/dashboard')
+def dashboard():
     username = session['username']
     cursor = conn.cursor();
-    blog = request.form['blog']
-    query = 'INSERT INTO blog (blog_post, username) VALUES(%s, %s)'
-    cursor.execute(query, (blog, username))
-    conn.commit()
+    query = 'SELECT * FROM Recipe where postedBy = %s'
+    cursor.execute(query, username)
+    recipes = cursor.fetchall()
     cursor.close()
-    return redirect(url_for('home'))
+    return render_template('dashboard.html', recipe_list=recipes)
 
-@app.route('/select_blogger')
-def select_blogger():
-    #check that user is logged in
-    #username = session['username']
-    #should throw exception if username not found
-    
+@app.route('/search')
+def search():
+    return render_template('search.html')
+
+@app.route('/search_recipes')
+def search_recipes():
+    search_input = request.form['search_input']
+    tag = request.form['tag']
+    stars = request.form['stars']
+
     cursor = conn.cursor();
-    query = 'SELECT DISTINCT username FROM blog'
-    cursor.execute(query)
-    data = cursor.fetchall()
+    query = 'Select recipeID, title FROM \
+            Recipe NATURAL JOIN RecipeTag NATURAL JOIN Review \
+            WHERE title like %\%s% \
+            and tagText = %s \
+            and stars=stars' 
+    
+    cursor.execute(query, (search_input, tagText, stars))
+    results = cursor.fetchall()
     cursor.close()
-    return render_template('select_blogger.html', user_list=data)
+    return render_template('search.html', results=results)
+
+@app.route('/post_recipe')
+def post_recipe():
+    return render_template('create_recipe.html')
+
+@app.route('/review/')
+def review():
+    # getting args from URL: https://stackoverflow.com/questions/40369016/using-request-args-in-flask-for-a-variable-url
+    recipeID = request.args.get('recipeID')
+    title = request.args.get('title')
+    return render_template('review.html', recipeID=recipeID, title=title)
+
+@app.route('/review_recipe')
+def review_recipe():
+    user = session['username']
+
+
+        
+# @app.route('/post', methods=['GET', 'POST'])
+# def post():
+#     username = session['username']
+#     cursor = conn.cursor();
+#     blog = request.form['blog']
+#     query = 'INSERT INTO blog (blog_post, username) VALUES(%s, %s)'
+#     cursor.execute(query, (blog, username))
+#     conn.commit()
+#     cursor.close()
+#     return redirect(url_for('home'))
+
+# @app.route('/select_blogger')
+# def select_blogger():
+#     #check that user is logged in
+#     #username = session['username']
+#     #should throw exception if username not found
+    
+#     cursor = conn.cursor();
+#     query = 'SELECT DISTINCT username FROM blog'
+#     cursor.execute(query)
+#     data = cursor.fetchall()
+#     cursor.close()
+#     return render_template('select_blogger.html', user_list=data)
 
 @app.route('/show_posts', methods=["GET", "POST"])
 def show_posts():
