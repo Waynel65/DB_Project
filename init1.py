@@ -14,6 +14,8 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 ##app = Flask(__name__)
 ##app.secret_key = "secret key"
 
+# example
+
 #Configure MySQL
 conn = pymysql.connect(host='localhost',
                        port = 3306,
