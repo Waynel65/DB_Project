@@ -26,7 +26,7 @@ def loginAuth():
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
-    query = 'SELECT * FROM Person WHERE username = %s and password = %s'
+    query = 'SELECT * FROM Person WHERE userName = %s and password = %s'
     cursor.execute(query, (username, password))
     #stores the results in a variable
     data = cursor.fetchone()
@@ -37,7 +37,7 @@ def loginAuth():
         #creates a session for the the user
         #session is a built in
         session['username'] = username
-        return redirect(url_for('home'))
+        return redirect("/dashboard")
     else:
         #returns an error message to the html page
         error = 'Invalid login or username'
@@ -70,7 +70,7 @@ def registerAuth():
         cursor.execute(ins, (username, password))
         conn.commit()
         cursor.close()
-        return redirect(url_for('login'))
+        return render_template('login.html')
     
 
 @app.route('/logout')
