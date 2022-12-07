@@ -20,7 +20,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 conn = pymysql.connect(host='localhost',
                        port = 3306,
                        user='root',
-                       password='root',
+                       password='rootroot',
                        db='FlaskDemo',
                        charset='utf8mb4',
                        cursorclass=pymysql.cursors.DictCursor)
@@ -88,6 +88,7 @@ def loginAuth():
         #returns an error message to the html page
         error = 'Invalid login or username'
         return render_template('login.html', error=error)
+
 
 #Authenticates the register
 # @app.route('/registerAuth', methods=['GET', 'POST'])
