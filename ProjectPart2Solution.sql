@@ -1,4 +1,4 @@
--- create database FlaskDemo; <= uncomment this line if you havent created the FlaskDemo DB
+-- create database FlaskDemo; <= uncomment this line if you havent created the FlaskDemo DB in your mysql
 use FlaskDemo;
 
 DROP TABLE IF EXISTS RecipeIngredient;

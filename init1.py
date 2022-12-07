@@ -14,6 +14,8 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 ##app = Flask(__name__)
 ##app.secret_key = "secret key"
 
+# example
+
 #Configure MySQL
 conn = pymysql.connect(host='localhost',
                        port = 3306,
@@ -70,7 +72,7 @@ def loginAuth():
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
-    query = 'SELECT * FROM user WHERE username = %s and password = %s'
+    query = 'SELECT * FROM Person WHERE username = %s and password = %s'
     cursor.execute(query, (username, password))
     #stores the results in a variable
     data = cursor.fetchone()
@@ -87,7 +89,8 @@ def loginAuth():
         error = 'Invalid login or username'
         return render_template('login.html', error=error)
 
-# Authenticates the register
+
+#Authenticates the register
 @app.route('/registerAuth', methods=['GET', 'POST'])
 def registerAuth():
     #grabs information from the forms
@@ -97,7 +100,8 @@ def registerAuth():
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
-    query = 'SELECT * FROM user WHERE username = %s'
+    # userName in the Person table
+    query = 'SELECT * FROM Person WHERE userName = %s'
     cursor.execute(query, (username))
     #stores the results in a variable
     data = cursor.fetchone()
@@ -108,12 +112,13 @@ def registerAuth():
         error = "This user already exists"
         return render_template('register.html', error = error)
     else:
-        ins = 'INSERT INTO user VALUES(%s, %s)'
+        ins = 'INSERT INTO Person (userName, password) VALUES (%s, %s)'
         cursor.execute(ins, (username, password))
         conn.commit()
         cursor.close()
-        return render_template('index.html')
+        return redirect(url_for('login'))
 
+    
 
 # @app.route('/home')
 # def home():
