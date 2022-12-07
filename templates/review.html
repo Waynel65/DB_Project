@@ -5,7 +5,7 @@
     <h2> Rate {{recipeID}} </h2>
 
     <form action="/review_recipe" method="POST">
-        <input type="hidden" name="agent_id" value="{{ recipeID }}">
+        <input type="hidden" name="recipeID" value="{{ recipeID }}">
         <input type="text" name = "rev_title" placeholder="Enter a title for your review" required/>
         <select id="stars" name="stars" required>
             <option value="0">0</option>

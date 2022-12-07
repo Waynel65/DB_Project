@@ -21,4 +21,8 @@ Running the flask app:
 
 Now the web app should be up and running at 127.0.0.1:5000
 
+- need to be able to show images in create-recipe
+- need to be able to incrementally add to to a recipe
+
+
 
