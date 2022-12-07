@@ -91,36 +91,32 @@ def loginAuth():
 
 
 #Authenticates the register
-# @app.route('/registerAuth', methods=['GET', 'POST'])
-# def registerAuth():
-#     #grabs information from the forms
-#     username = request.form['username']
-#     password = request.form['password']
-
-#     #cursor used to send queries
-#     cursor = conn.cursor()
-#     #executes query
-#     query = 'SELECT * FROM user WHERE username = %s'
-#     cursor.execute(query, (username))
-#     #stores the results in a variable
-#     data = cursor.fetchone()
-#     #use fetchall() if you are expecting more than 1 data row
-#     error = None
-#     if(data):
-#         #If the previous query returns data, then user exists
-#         error = "This user already exists"
-#         return render_template('register.html', error = error)
-#     else:
-#         ins = 'INSERT INTO user VALUES(%s, %s)'
-#         cursor.execute(ins, (username, password))
-#         conn.commit()
-#         cursor.close()
-#         return render_template('index.html')
-
 @app.route('/registerAuth', methods=['GET', 'POST'])
 def registerAuth():
+    #grabs information from the forms
     username = request.form['username']
     password = request.form['password']
+
+    #cursor used to send queries
+    cursor = conn.cursor()
+    #executes query
+    # userName in the Person table
+    query = 'SELECT * FROM Person WHERE userName = %s'
+    cursor.execute(query, (username))
+    #stores the results in a variable
+    data = cursor.fetchone()
+    #use fetchall() if you are expecting more than 1 data row
+    error = None
+    if(data):
+        #If the previous query returns data, then user exists
+        error = "This user already exists"
+        return render_template('register.html', error = error)
+    else:
+        ins = 'INSERT INTO Person (userName, password) VALUES (%s, %s)'
+        cursor.execute(ins, (username, password))
+        conn.commit()
+        cursor.close()
+        return render_template('index.html')
 
     
 
