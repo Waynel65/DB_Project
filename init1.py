@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, session, url_for, redirect, f
 from app import app, conn
 from auth import *
 from dashboard import *
+from recipe import *
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])

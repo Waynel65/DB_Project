@@ -1,0 +1,71 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		* {
+		  box-sizing: border-box;
+		  font-family: Arial, Helvetica, sans-serif;
+		}
+		body {
+		  margin: 0;
+		  font-family: Arial, Helvetica, sans-serif;
+		}
+		#login, .pure-form, .input {
+			text-align:center;
+		}
+		#stacked-email, #stacked-password{
+			margin:auto;
+		}
+		input{
+			padding: 0.5rem;
+    		width: 100%;
+		}
+		div{
+			margin: 1rem;
+		}
+		.round-submit-button{
+			border-radius: 25px;
+			border: 2px solid #73AD21;
+			padding: 20px;
+			width: 50px;
+			height: 25px;
+		}
+
+		/* Style the content */
+		.content {
+		  
+		  padding: 10px;
+		  height: 200px; /* Should be removed. Only for demonstration */
+		}
+	</style>
+</head>
+<body>
+	<div class="content">
+        <div>
+            <h1>Create Recipe</h1>
+        </div>
+		<div>
+			<form action="/createRecipe" method="POST">
+				<div><input type="text" name = "title" placeholder="Add Title" required/> </br></div>
+                <div><input type="text" name = "numServings" placeholder="Add Number of Servings" required/> </br></div>
+                <div><input type="text" name = "dietaryRestrictions" placeholder="Add Dietary Restrictions" required/> </br></div>
+                <div><input type="text" name = "recipeTags" placeholder="Add Recipe Tags" required/> </br></div>
+                <div><input type="text" name = "ingredients" placeholder="Add Ingredients" required/> </br></div>
+				<div>
+				<input type="submit" value = Register />
+					{% if error %}
+						<p class="error"><strong>Error:</strong> {{error}}</p>
+					{% endif %}
+				</div>
+			</form>
+		</div>
+		<div><a href="/">Go back</a></div>
+	</div>
+
+
+
+</body>
+
+
+</html>

@@ -40,18 +40,40 @@
 	<div class="content">
 
 		<div>
+			<div>
+				<h1>Create Account</h1>
+
+			</div>
 			<form action="/registerAuth" method="POST">
-				<input type="text" name = "username" placeholder="username" required/> </br>
-				<input type="password" name = "password" placeholder="password" required/></br>
-				<input type="submit" value = Register />
+				
+				<div>
+					<input class="input" type="text" name = "username" placeholder="username" required/> </br>
+				</div>
+				<div>
+					<input class="input" type="password" name = "password" placeholder="password" required/></br>
+				</div>
+				<div>
+					<input class="input" type="text" name="firstName" id="" required placeholder="First Name" />
+				</div>
+				<div>
+					<input class="input" type="text" name="lastName" id="" required placeholder="Last Name" />
+				</div>
+				<div>
+					<input class="input" type="email" name="emailAddress" id="" required placeholder="Email Address" />
+				</div>
+				<div>
+				<input type="submit" value = "Create Account" />
 				{% if error %}
 					<p class="error"><strong>Error:</strong> {{error}}</p>
 				{% endif %}
+				</div>
 			</form>
 		</div>
+		<div><a href="/">Go back</a></div>
 	</div>
 
-<a href="/">Go back</a>
+	
+
 
 </body>
 

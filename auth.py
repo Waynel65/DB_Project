@@ -50,14 +50,18 @@ def registerAuth():
     #grabs information from the forms
     username = request.form['username']
     password = request.form['password']
+    fname = request.form['firstName']
+    lname = request.form['lastName']
+    email = request.form['emailAddress']
 
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
     # userName in the Person table
-    query = 'SELECT * FROM Person WHERE userName = %s'
-    cursor.execute(query, (username))
+    query = 'SELECT * FROM Person WHERE email = %s'
+    cursor.execute(query, (email))
     #stores the results in a variable
+    # If this email address is already registered, then throw an error
     data = cursor.fetchone()
     #use fetchall() if you are expecting more than 1 data row
     error = None
@@ -66,12 +70,11 @@ def registerAuth():
         error = "This user already exists"
         return render_template('register.html', error = error)
     else:
-        ins = 'INSERT INTO Person (userName, password) VALUES (%s, %s)'
-        cursor.execute(ins, (username, password))
+        ins = 'INSERT INTO Person (userName, password,fName, lName, email) VALUES (%s, %s, %s, %s, %s)'
+        cursor.execute(ins, (username, password, fname, lname, email))
         conn.commit()
         cursor.close()
         return render_template('login.html')
-    
 
 @app.route('/logout')
 def logout():
