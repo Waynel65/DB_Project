@@ -31,12 +31,8 @@
 			width: 50px;
 			height: 25px;
 		}
-
-		/* Style the content */
 		.content {
-		  
 		  padding: 10px;
-		  height: 200px; /* Should be removed. Only for demonstration */
 		}
 	</style>
 	<script type='text/javascript'>
@@ -129,9 +125,7 @@
         </div>
 
 		<div>
-			<!-- {% for e in recipe %}
-				{{e}}
-			{% endfor %} -->
+			
 			<h1>How to make {{recipe.title}}</h1>
 			<h4>Author: {{recipe.postedBy}} </h4>
 			<h4>Number of Servings: {{recipe.numServings}}</h4>
@@ -164,7 +158,8 @@
 		<div>
 
 		</div>
-		<div><a href="/dashboard">Go back</a></div>
+		
+		<div><button class="pure-button"><a href="/dashboard">Go back</a></button></div>
 	</div>
 </body>
 

@@ -11,7 +11,7 @@
 		  margin: 0;
 		  font-family: Arial, Helvetica, sans-serif;
 		}
-		#login, .pure-form, .input {
+		#login, .pure-form, .input, h1 {
 			text-align:center;
 		}
 		#stacked-email, #stacked-password{
@@ -20,6 +20,10 @@
 		div{
 			margin: 1rem;
 		}
+		input{
+			padding: 0.5rem;
+    		width: 100%;
+		}
 		.round-submit-button{
 			border-radius: 25px;
 			border: 2px solid #73AD21;
@@ -27,12 +31,8 @@
 			width: 50px;
 			height: 25px;
 		}
-
-		/* Style the content */
 		.content {
-		  
 		  padding: 10px;
-		  height: 200px; /* Should be removed. Only for demonstration */
 		}
 	</style>
 </head>
@@ -42,15 +42,13 @@
 		<div>
 			<div>
 				<h1>Create Account</h1>
-
 			</div>
-			<form action="/registerAuth" method="POST">
-				
+			<form class="pure-form pure-form-stacked" action="/registerAuth" method="POST">
 				<div>
-					<input class="input" type="text" name = "username" placeholder="username" required/> </br>
+					<input class="input" type="text" name = "username" placeholder="username" required/>
 				</div>
 				<div>
-					<input class="input" type="password" name = "password" placeholder="password" required/></br>
+					<input class="input" type="password" name = "password" placeholder="password" required/>
 				</div>
 				<div>
 					<input class="input" type="text" name="firstName" id="" required placeholder="First Name" />
