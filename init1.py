@@ -1,6 +1,6 @@
 #Import Flask Library
 from flask import Flask, render_template, request, session, url_for, redirect, flash
-
+from create_group import *
 from app import app, conn
 from auth import *
 from dashboard import *
