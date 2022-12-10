@@ -39,6 +39,73 @@
 		  height: 200px; /* Should be removed. Only for demonstration */
 		}
 	</style>
+	<script type='text/javascript'>
+        function addFields(){
+            // Generate a dynamic number of inputs
+            var number = document.getElementById("ing").value;
+			
+            // Get the element where the inputs will be added to
+            var container = document.getElementById("container");
+            // Remove every children it had before
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            for (i = 0; i < number; i++) {
+                // 1. Append a node for iName
+                container.appendChild(document.createTextNode("Ingredient #" + (i+1) + " Name"));
+                let input = document.createElement("input");
+                input.type = "text";
+                input.name = "name_ing" + i;
+                container.appendChild(input);
+                container.appendChild(document.createElement("br"));
+				// 2. Append a node for unitName
+                container.appendChild(document.createTextNode("Ingredient #" + (i+1) + " Unit name"));
+                let input2 = document.createElement("input");
+                input2.type = "text";
+                input2.name = "unitName_ing" + i;
+                container.appendChild(input2);
+                container.appendChild(document.createElement("br"));
+				// 3. Append a node for unitName
+                container.appendChild(document.createTextNode("Ingredient #" + (i+1) + " amount"));
+                let input3 = document.createElement("input");
+                input3.type = "text";
+                input3.name = "amount_ing" + i;
+                container.appendChild(input3);
+                container.appendChild(document.createElement("br"));
+				// 3. Append a node for PurchaseLink
+                container.appendChild(document.createTextNode("Ingredient #" + (i+1) + " Purchase Link"));
+                let input4 = document.createElement("input");
+                input4.type = "text";
+                input4.name = "purchase_link_ing" + i;
+                container.appendChild(input4);
+                container.appendChild(document.createElement("br"));
+            }
+		}
+			
+		function addRestrictionsFields(){
+			var number = document.getElementById("rst").value;
+			var container = document.getElementById("container_dietary_restrictions");
+			while (container.hasChildNodes()) {
+				container.removeChild(container.lastChild);
+			}
+			for (i = 0; i < number; i++) {
+				// 1. Append a node for iName
+				container.appendChild(document.createTextNode("Restriction #" + (i+1) + " Name"));
+				let input = document.createElement("input");
+				input.type = "text";
+				input.name = "name_rst" + i;
+				container.appendChild(input);
+				container.appendChild(document.createElement("br"));
+				// 1. Append a node for iName
+				container.appendChild(document.createTextNode("Restriction #" + (i+1) + " Description"));
+				let input2 = document.createElement("input");
+				input2.type = "text";
+				input2.name = "desc_rst" + i;
+				container.appendChild(input2);
+				container.appendChild(document.createElement("br"));
+			}
+		}
+    </script>
 </head>
 <body>
 	<div class="content">
@@ -49,11 +116,25 @@
 			<form action="/createRecipe" method="POST">
 				<div><input type="text" name = "title" placeholder="Add Title" required/> </br></div>
                 <div><input type="text" name = "numServings" placeholder="Add Number of Servings" required/> </br></div>
-                <div><input type="text" name = "dietaryRestrictions" placeholder="Add Dietary Restrictions" required/> </br></div>
+                <div>
+					<h2>Add Dietary Restrictions</h2>
+					<label>Enter the number of Dietary Restrictions (e.g. 2) below and then click on Fill Details. </label>
+					<input placeholder="Number of Dietary Restrictions " type="text" id="rst" required name="numDietaryRestrictions" value="">
+					<a href="#" id="filldetails_rest" onclick="addRestrictionsFields()">Fill Details</a>
+    				<div id="container_dietary_restrictions"/>
+					</div>
+				</div>
                 <div><input type="text" name = "recipeTags" placeholder="Add Recipe Tags" required/> </br></div>
-                <div><input type="text" name = "ingredients" placeholder="Add Ingredients" required/> </br></div>
+                <div>
+					 <h2>Add Ingredients</h2>
+					 <label>Enter the number of Ingredients (e.g. 2) below and then click on Fill Details. </label>
+					 <input placeholder="Number of Ingredients" type="text" id="ing" required name="numIngredients" value="">
+					 <a href="#" id="filldetails" onclick="addFields()">Fill Details</a>
+    				 <div id="container"/>
+				</div>
+				</div>
 				<div>
-				<input type="submit" value = Register />
+					<input type="submit" value = Register />
 					{% if error %}
 						<p class="error"><strong>Error:</strong> {{error}}</p>
 					{% endif %}
@@ -62,9 +143,6 @@
 		</div>
 		<div><a href="/">Go back</a></div>
 	</div>
-
-
-
 </body>
 
 
