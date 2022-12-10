@@ -5,7 +5,6 @@ from app import app, conn
 def post_recipe():
     return render_template('create_recipe.html')
 
-
 @app.route('/create_recipe')
 def create_recipe():
     username = session['username']
@@ -20,11 +19,16 @@ def create_recipe():
 @app.route('/createRecipe', methods=['GET', 'POST'])
 def createRecipe():
     username = session['username']
-    #grabs information from the forms
     title = request.form['title']
     numServings = request.form['numServings']
     numDietRestr = request.form['numDietaryRestrictions']
     recipeTags = request.form['recipeTags']
+    numSteps = request.form['numSteps']
+    step_detail_map = dict()
+    for i in range(0, int(numSteps)):
+        curr_desc = "step_desc" + str(i)
+        step_detail_map[i] = [request.form[curr_desc]]
+
     restrictions_detail_map = dict()
     for i in range(0, int(numDietRestr)):
         curr_rst = "name_rst" + str(i);
@@ -68,13 +72,11 @@ def createRecipe():
             cursor.execute(ins, (currRecipeID, i))
             conn.commit()
 
-        ######## Ingredient Table #########
         # check if any of these ingredients are already found in the Ingredient DB.
         for key, val in ingr_detail_map.items():
             # ingr_detail_map looks like: key is 0 and value is ['strawberry', 'Gram', '3']
             # For each ingredient:
             # 1. Insert a new entry into Ingredient table if not already in DB.
-            
             ######### Ingredient Table #########
             query = 'SELECT * FROM Ingredient WHERE iName = %s'
             cursor.execute(query, (val[0]))
@@ -93,17 +95,16 @@ def createRecipe():
                 ins = 'INSERT INTO Unit (unitName) VALUES (%s)'
                 cursor.execute(ins, (unitName))
 
-            ######### RecipeIngredient Table #########
+            
             # 2. Add an entry into RecipeIngredient Table
+            ######### RecipeIngredient Table #########
             ins = 'INSERT INTO RecipeIngredient (recipeID, iName, unitName, amount) VALUES (%s, %s, %s, %s)'
             cursor.execute(ins, (currRecipeID, ingredientName, val[1],int(val[2])))
             conn.commit()
 
 
         ###### Restrictions table ########
-        # TODO: FIX!!!!!!
         for key, val in restrictions_detail_map.items():
-            print(key, val)
             query = 'SELECT * FROM Ingredient WHERE iName = %s'
             cursor.execute(query, val[0])
             data = cursor.fetchone()
@@ -112,6 +113,13 @@ def createRecipe():
                 ins = 'INSERT INTO Restrictions (iName, restrictionDesc) VALUES (%s, %s)'
                 cursor.execute(ins, (val[0], val[1])) # TODO: pass in the actual value for restrictionDesc!!!
                 conn.commit()
+
+        ####### Step Table #########
+        for key, val in step_detail_map.items():
+            #  map = {0 : "Cut Chicken.", 1: "Bring the heat to medium", 2: "Put oil", }
+            ins = 'INSERT INTO Step (stepNo, recipeID, sDesc) VALUES (%s, %s, %s)'
+            cursor.execute(ins, (str(key), currRecipeID, val[0]))
+            conn.commit()
 
 
         cursor.close()

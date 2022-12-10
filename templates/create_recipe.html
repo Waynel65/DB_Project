@@ -89,14 +89,12 @@
 				container.removeChild(container.lastChild);
 			}
 			for (i = 0; i < number; i++) {
-				// 1. Append a node for iName
 				container.appendChild(document.createTextNode("Restriction #" + (i+1) + " Name"));
 				let input = document.createElement("input");
 				input.type = "text";
 				input.name = "name_rst" + i;
 				container.appendChild(input);
 				container.appendChild(document.createElement("br"));
-				// 1. Append a node for iName
 				container.appendChild(document.createTextNode("Restriction #" + (i+1) + " Description"));
 				let input2 = document.createElement("input");
 				input2.type = "text";
@@ -105,6 +103,23 @@
 				container.appendChild(document.createElement("br"));
 			}
 		}
+		function addStepFields(){
+			var number = document.getElementById("stp").value;
+			var container = document.getElementById("container_steps");
+			while (container.hasChildNodes()) {
+				container.removeChild(container.lastChild);
+			}
+			for (i = 0; i < number; i++) {
+				container.appendChild(document.createTextNode("Step #" + (i+1) + " Description: "));
+				let input = document.createElement("input");
+				input.type = "text";
+				input.name = "step_desc" + i;
+				container.appendChild(input);
+				container.appendChild(document.createElement("br"));
+			}
+		}
+
+
     </script>
 </head>
 <body>
@@ -133,6 +148,16 @@
     				 <div id="container"/>
 				</div>
 				</div>
+
+				<div>
+					<h2>Add Steps</h2>
+					<label>Enter the number of Steps </label>
+					<input placeholder="Number of Steps" type="text" id="stp" required name="numSteps" value="">
+					<a href="#" id="filldetails" onclick="addStepFields()">Fill Details</a>
+					<div id="container_steps"/>
+			   </div>
+			   
+
 				<div>
 					<input type="submit" value = Register />
 					{% if error %}
@@ -141,7 +166,7 @@
 				</div>
 			</form>
 		</div>
-		<div><a href="/">Go back</a></div>
+		<div><a href="/dashboard">Go back</a></div>
 	</div>
 </body>
 
