@@ -34,9 +34,6 @@ def allowed_image_filesize(filesize):
 
 
 
-
-    
-
 # @app.route('/home')
 # def home():
 #     user = session['username']
