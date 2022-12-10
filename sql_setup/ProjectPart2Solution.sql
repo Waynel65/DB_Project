@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS Person;
 
 CREATE TABLE Person (
     userName VARCHAR(50) PRIMARY KEY,
-    password VARCHAR(50),
+    password VARCHAR(128),
     fName VARCHAR(50),
     lName VARCHAR(50),
     email VARCHAR(250),

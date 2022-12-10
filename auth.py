@@ -1,6 +1,8 @@
 from app import app, conn
 from flask import Flask, render_template, request, session, url_for, redirect, flash
+from flask_bcrypt import Bcrypt
 
+bcrypt = Bcrypt(app)
 #Define a route to hello function
 @app.route('/')
 def hello():
@@ -26,14 +28,15 @@ def loginAuth():
     #cursor used to send queries
     cursor = conn.cursor()
     #executes query
-    query = 'SELECT * FROM Person WHERE userName = %s and password = %s'
-    cursor.execute(query, (username, password))
+    query = 'SELECT * FROM Person WHERE userName = %s'
+    cursor.execute(query, (username))
     #stores the results in a variable
     data = cursor.fetchone()
     #use fetchall() if you are expecting more than 1 data row
     cursor.close()
     error = None
-    if(data):
+    
+    if(data and bcrypt.check_password_hash(data['password'],password)):
         #creates a session for the the user
         #session is a built in
         session['username'] = username
@@ -53,6 +56,7 @@ def registerAuth():
     fname = request.form['firstName']
     lname = request.form['lastName']
     email = request.form['emailAddress']
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     #cursor used to send queries
     cursor = conn.cursor()
@@ -71,7 +75,7 @@ def registerAuth():
         return render_template('register.html', error = error)
     else:
         ins = 'INSERT INTO Person (userName, password,fName, lName, email) VALUES (%s, %s, %s, %s, %s)'
-        cursor.execute(ins, (username, password, fname, lname, email))
+        cursor.execute(ins, (username, hashed_password, fname, lname, email))
         conn.commit()
         cursor.close()
         return render_template('login.html')
