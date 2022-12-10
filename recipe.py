@@ -126,12 +126,47 @@ def createRecipe():
         return render_template('dashboard.html')
     
 
-# @app.route('/recipe-info')
-# def create_recipe():
-#     username = session['username']
-#     # cursor = conn.cursor();
-#     # query = 'SELECT * FROM Recipe where postedBy = %s'
-#     # cursor.execute(query, username)
-#     # recipes = cursor.fetchall()
-#     # cursor.close()
-#     return render_template('create_recipe.html')
+@app.route('/recipeInfo/')
+def recipeInfo():
+
+    rId = request.args.get('recipeId')
+    cursor = conn.cursor()
+    query = 'SELECT * FROM Recipe WHERE recipeID = %s'
+    cursor.execute(query, (int(rId)))
+    foundRecipe = cursor.fetchone()
+    error = None
+    
+    if foundRecipe:
+        query = 'SELECT * FROM RecipeIngredient where recipeID = %s'
+        cursor.execute(query, rId)
+        foundRecipeIng = cursor.fetchall()
+        # for every recipeIngredient, search in Ingredient table and Restrictions table.
+        listIngredients = []
+        listRestrictions = []
+        for i in foundRecipeIng:
+            query = 'SELECT * FROM Ingredient where iName = %s'
+            cursor.execute(query, i["iName"])
+            foundIng = cursor.fetchone()
+            listIngredients.append(foundIng)
+            query = 'SELECT * FROM Restrictions where iName = %s'
+            cursor.execute(query, i["iName"])
+            foundRestr = cursor.fetchone()
+            listRestrictions.append(foundRestr)
+            
+
+        query = 'SELECT * FROM RecipeTag where recipeID = %s'
+        cursor.execute(query, rId)
+        foundRecipeTags = cursor.fetchall()
+        
+        query = 'SELECT * FROM Step where recipeID = %s'
+        cursor.execute(query, rId)
+        foundSteps = cursor.fetchall()
+
+        cursor.close()
+        return render_template('recipeInfo.html', recipe=foundRecipe, recipeIngred = foundRecipeIng,
+        recipeTags = foundRecipeTags, listIngredients = listIngredients, listRestrictions = listRestrictions,
+        steps=foundSteps)
+    else:
+        cursor.close()
+        error = 'Invalid Recipe ID.'
+        return render_template('dashboard.html', error=error)
