@@ -3,9 +3,11 @@
 </head>
 <body>
     <h1> Welcome {{username}} </h1>
-    <button onclick="location.href='/create_recipe'" type=""button>Post New Recipe</button>
-    <button onclick="location.href='/search'" type=""button>Search Recipes</button>
+    <button onclick="location.href='/create_recipe'" type="button">Post New Recipe</button>
+    <button onclick="location.href='/search'" type="button">Search Recipes</button>
+    <button onclick="location.href='/settings'" type="button">Settings</button>
 
+    {% if recipes %}
     <h3> My Recipes </h3>
     <table>
         <th>RecipeID</th>
@@ -20,9 +22,29 @@
         </tr>
     {% endfor %}
     </table>
+    {% else %}
+    <h3> You currently have no recipes posted. Start posting new recipes!</h3>
+    {% endif %}
 
-    <button> Join Group </button>
+    {% if groups %}
+        <h3> My Groups </h3>
+        <table>
+            <th>Group Name</th>
+            <th>Group Creator</th>
+            <th>Number of Servings</th>
 
+        {% for line in groups %}
+            <tr>
+                <td>{{line.gName}}</td>
+                <td>{{line.gCreator}}</td>
+                <td>{{line.eID}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+    <button onclick="location.href='/join_group'" type=""button>Join Group</button>
+    <button onclick="location.href='/create_group'" type=""button>Create Group</button>
+<br>
 <a href="/">Go back</a>
 </body>
 

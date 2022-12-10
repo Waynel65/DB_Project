@@ -4,6 +4,8 @@ from create_group import *
 from app import app, conn
 from auth import *
 from dashboard import *
+from recipe import *
+from search import *
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
@@ -31,9 +33,6 @@ def allowed_image_filesize(filesize):
         return False
 
 
-
-
-    
 
 # @app.route('/home')
 # def home():

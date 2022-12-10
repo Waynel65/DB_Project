@@ -168,7 +168,7 @@ CREATE TABLE Unit (
 CREATE TABLE UnitConversion (
     sourceUnit VARCHAR(255) NOT NULL,
     destinationUnit VARCHAR(255) NOT NULL,
-    ratio DECIMAL NOT NULL,
+    ratio DECIMAL(10,5) NOT NULL,
     PRIMARY KEY (sourceUnit , destinationUnit),
     FOREIGN KEY (sourceUnit)
         REFERENCES Unit (unitName),

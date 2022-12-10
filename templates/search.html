@@ -6,6 +6,7 @@
 <form action="/search_recipes" method="POST">
 	<input type="text" name = "search_input" placeholder="search some recipes" required/>
     <input type="text" name = "tag" placeholder="recipe tag" />
+    <label for="stars">Number of Stars: </label>
     <select id="stars" name="stars">
         <option value="0">0</option>
         <option value="1">1</option>
@@ -14,6 +15,12 @@
         <option value="4">4</option>
         <option value="5">5</option>
     </select>
+    <label for="filter">Filter: </label>
+    <select id="filter" name="filter">
+        <option value="alphabetical">Sort alphabetically</option>
+        <option value="rank_by_stars">Rank by Stars</option>
+    </select>
+
 
 	<input type="submit" value = Search />
     <!-- {% if error %}
