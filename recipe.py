@@ -50,7 +50,7 @@ def createRecipe():
     
     cursor = conn.cursor()
     query = 'SELECT * FROM Recipe WHERE title = %s'
-    cursor.execute(query, (username))
+    cursor.execute(query, (title))
     data = cursor.fetchone()
     error = None
     if(data):
