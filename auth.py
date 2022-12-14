@@ -2,6 +2,8 @@ from app import app, conn
 from flask import Flask, render_template, request, session, url_for, redirect, flash
 from flask_bcrypt import Bcrypt
 
+
+
 bcrypt = Bcrypt(app)
 #Define a route to hello function
 @app.route('/')
@@ -17,6 +19,11 @@ def login():
 @app.route('/register')
 def register():
     return render_template('register.html')
+#Logs user out
+@app.route('/logoutAuth', methods=['GET', 'POST'])
+def logoutAuth():
+    session['user_is_logged_in'] = False
+    return redirect("/")
 
 #Authenticates the login
 @app.route('/loginAuth', methods=['GET', 'POST'])
@@ -40,6 +47,7 @@ def loginAuth():
         #creates a session for the the user
         #session is a built in
         session['username'] = username
+        session['user_is_logged_in'] = True
         return redirect("/dashboard")
     else:
         #returns an error message to the html page

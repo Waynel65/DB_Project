@@ -3,7 +3,10 @@ from app import app, conn
 
 @app.route('/dashboard')
 def dashboard():
+    if not session.get('user_is_logged_in'):
+        return redirect('/login')
     username = session['username']
+    print(username)
     cursor = conn.cursor();
     query = 'SELECT * FROM Recipe where postedBy = %s'
     cursor.execute(query, username)
