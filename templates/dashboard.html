@@ -1,11 +1,49 @@
 <html>
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		* {
+		  box-sizing: border-box;
+		  font-family: Arial, Helvetica, sans-serif;
+		}
+		body {
+		  margin: 0;
+		  font-family: Arial, Helvetica, sans-serif;
+		}
+		#login, .pure-form, .input {
+			text-align:center;
+		}
+		#stacked-email, #stacked-password{
+			margin:auto;
+		}
+		div{
+			margin: 1rem;
+		}
+		.round-submit-button{
+			border-radius: 25px;
+			border: 2px solid #73AD21;
+			padding: 20px;
+			width: 50px;
+			height: 25px;
+		}
+		input{
+			padding: 0.5rem;
+    		width: 60%;
+		}
+		/* Style the content */
+		.content {
+		  padding: 10px;
+		}
+		
+	</style>
 </head>
 <body>
+    <div class="content .pure-g">
     <h1> Welcome {{username}} </h1>
-    <button onclick="location.href='/create_recipe'" type="button">Post New Recipe</button>
-    <button onclick="location.href='/search'" type="button">Search Recipes</button>
-    <button onclick="location.href='/settings'" type="button">Settings</button>
+    <button class="pure-button" onclick="location.href='/create_recipe'" type="button">Post New Recipe</button>
+    <button class="pure-button" onclick="location.href='/search'" type="button">Search Recipes</button>
+    <button class="pure-button" onclick="location.href='/settings'" type="button">Settings</button>
 
     {% if recipe_list %}
     <h3> My Recipes </h3>
@@ -44,10 +82,16 @@
         {% endfor %}
         </table>
     {% endif %}
-    <button onclick="location.href='/join_group'" type=""button>Join Group</button>
-    <button onclick="location.href='/create_group'" type=""button>Create Group</button>
+    <button class="pure-button" onclick="location.href='/join_group'" type=""button>Join Group</button>
+    <button class="pure-button" onclick="location.href='/create_group'" type=""button>Create Group</button>
 <br>
-<a href="/">Go back</a>
+<div>
+    <form class="pure-form pure-form-stacked" id="logout" action="/logoutAuth" method="POST">
+		<button class="pure-button" id="logoutButton">Log Out</button>
+    </form>
+
+</div>
+</div>
 </body>
 
 
