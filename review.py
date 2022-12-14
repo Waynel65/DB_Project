@@ -4,11 +4,11 @@ from app import app, conn
 @app.route('/review/')
 def review():
     # getting args from URL: https://stackoverflow.com/questions/40369016/using-request-args-in-flask-for-a-variable-url
-    recipeID = request.args.get('recipeID')
+    recipeID = request.args.get('recipeId')
     title = request.args.get('title')
     return render_template('review.html', recipeID=recipeID, title=title)
 
-@app.route('/review_recipe')
+@app.route('/review_recipe', methods=['POST', 'GET'])
 def review_recipe():
     user = session['username']
     recipeID = request.form['recipeID']
@@ -19,7 +19,7 @@ def review_recipe():
     cursor = conn.cursor();
     query = 'INSERT INTO Review (userName, recipeID, revTitle, revDesc, stars) \
             values (%s, %s, %s, %s, %s) '
-    cursor.execute(query, (user, recipeID, rev_title, rev_title, rev_desc, stars))
+    cursor.execute(query, (user, recipeID, rev_title, rev_desc, stars))
     conn.commit()
     cursor.close()
     return redirect(url_for('dashboard'))

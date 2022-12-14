@@ -7,18 +7,20 @@
     <button onclick="location.href='/search'" type="button">Search Recipes</button>
     <button onclick="location.href='/settings'" type="button">Settings</button>
 
-    {% if recipes %}
+    {% if recipe_list %}
     <h3> My Recipes </h3>
     <table>
         <th>RecipeID</th>
         <th>Title</th>
         <th>Number of Servings</th>
 
-    {% for line in recipes %}
+    {% for line in recipe_list %}
         <tr>
-            <td>{{line.recipeID}}</td>
+            <!-- <td><a href="/recipeInfo/" onclick="location.href=this.href+'?recipeId='+line.recipeID;return false;">{{line.recipeID}}</a></td> -->
+            <td>{{line.recipeID}}</a></td>
             <td>{{line.title}}</td>
             <td>{{line.numServings}}</td>
+            <td><button><a href="/recipeInfo/?recipeId={{line.recipeID}}">see details</a></button></td>
         </tr>
     {% endfor %}
     </table>

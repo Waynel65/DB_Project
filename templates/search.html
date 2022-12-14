@@ -34,7 +34,7 @@
 
     {% for line in results %}
     <tr>
-        <td><a href="/recipe_info/" onclick="location.href=this.href+'?recipeID='+line.recipeID;return false;">{{line.recipeID}}</a></td>
+        <td><a href="/recipeInfo/?recipeId={{line.recipeID}}">{{line.recipeID}}</a></td>
         <td>{{line.title}}</td>
     </tr>
     {% endfor %}

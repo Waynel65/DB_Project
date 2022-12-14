@@ -123,13 +123,26 @@ def createRecipe():
 
 
         cursor.close()
-        return render_template('dashboard.html')
-    
+        return redirect('/dashboard')
+
+# def get_unit_conversions():
+#     """
+#         do a query to get all possible conversions
+#         store them in the form of {source: ratio}
+#     """
+#     query
+
 
 @app.route('/recipeInfo/')
 def recipeInfo():
 
     rId = request.args.get('recipeId')
+    unit_pref = session.get('unit_pref') ## could be "metric" or "imperial"
+    metric_units = set(['ml', 'mm', 'g'])
+    imperial_units = set(['fl oz', 'oz', 'inch'])
+    unit_hashmap = {'metric': metric_units, 'imperial': imperial_units}
+
+
     cursor = conn.cursor()
     query = 'SELECT * FROM Recipe WHERE recipeID = %s'
     cursor.execute(query, (int(rId)))
@@ -137,21 +150,43 @@ def recipeInfo():
     error = None
     
     if foundRecipe:
+        ## all of the ingredients that this recipe uses
         query = 'SELECT * FROM RecipeIngredient where recipeID = %s'
         cursor.execute(query, rId)
         foundRecipeIng = cursor.fetchall()
+
         # for every recipeIngredient, search in Ingredient table and Restrictions table.
         listIngredients = []
         listRestrictions = []
-        for i in foundRecipeIng:
+        for i in range(len(foundRecipeIng)):
+            ingred = foundRecipeIng[i]
             query = 'SELECT * FROM Ingredient where iName = %s'
-            cursor.execute(query, i["iName"])
+            cursor.execute(query, ingred["iName"])
             foundIng = cursor.fetchone()
             listIngredients.append(foundIng)
             query = 'SELECT * FROM Restrictions where iName = %s'
-            cursor.execute(query, i["iName"])
+            cursor.execute(query, ingred["iName"])
             foundRestr = cursor.fetchone()
             listRestrictions.append(foundRestr)
+            
+            if ingred['unitName'] not in unit_hashmap[unit_pref]: ## if unitName does not match the pref of user
+                query = 'SELECT destinationUnit, ratio FROM UnitConversion \
+                        WHERE sourceUnit = %s'
+                cursor.execute(query, ingred['unitName'])
+                dest_ratio = cursor.fetchone()
+                destinationUnit = dest_ratio.get('destinationUnit')
+                ratio = dest_ratio.get('ratio')
+                print(ratio)
+                foundRecipeIng[i]['amount'] = round((float(foundRecipeIng[i]['amount']) * float(ratio)), 2) ## need to be converted to float to work in python
+                foundRecipeIng[i]['unitName'] = destinationUnit
+    
+
+        # print(float(foundRecipeIng[0]['amount']))
+        # foundRecipeIng[0]['amount'] = 20
+        # print(float(foundRecipeIng[0]['amount']))
+        # if unit_pref: ## if the user has set a unit preference
+
+            
             
 
         query = 'SELECT * FROM RecipeTag where recipeID = %s'

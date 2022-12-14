@@ -1,8 +1,12 @@
 <html>
 <head>
+    <style>
+        #textbox {height:200px; font-size:12pt;}
+    </style>
 </head>
+
 <body>
-    <h2> Rate {{recipeID}} </h2>
+    <h2> Rate {{title}} </h2>
 
     <form action="/review_recipe" method="POST">
         <input type="hidden" name="recipeID" value="{{ recipeID }}">
@@ -15,7 +19,9 @@
             <option value="4">4</option>
             <option value="5">5</option>
         </select>
-        <input type="text" name = "rev_desc" placeholder="Write a review" />
+        <br>
+        <input id="textbox" type="text" name = "rev_desc" placeholder="Write a review"  />
+        <br>
         <input type="submit" value = "Submit" />
         <!-- {% if error %}
             <p class="error"><strong>Error:</strong> {{error}}</p>

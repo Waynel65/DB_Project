@@ -33,7 +33,7 @@ def settings():
 @app.route('/set_preferences', methods=['GET','POST'])
 def set_preferences():
     unit = request.form['unit']
-    session['unit_pref'] = unit
+    session['unit_pref'] = unit ## either metric or imperial
 
     return redirect('/dashboard')
 
