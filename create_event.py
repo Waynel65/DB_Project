@@ -8,7 +8,7 @@ def create_event():
 @app.route('/event_detail', methods=['GET','POST'])
 def event_detail():
     user = session['username']
-    GroupName = request.form['GroupName']
+    GroupName = request.form['gName']
     eventName=request.form['eventName']
     eventDesc=request.form['eventDescription']
 
