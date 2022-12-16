@@ -18,6 +18,8 @@ def create_recipe():
 #Authenticates the register
 @app.route('/createRecipe', methods=['GET', 'POST'])
 def createRecipe():
+    error = None
+    print("ARE YOU SENDING???? ---------")
     username = session['username']
     title = request.form['title']
     numServings = request.form['numServings']
@@ -35,8 +37,10 @@ def createRecipe():
         curr_desc = "desc_rst" + str(i);
         restrictions_detail_map[i] = [request.form[curr_rst], request.form[curr_desc]]
 
+    allowed_unit_names = ['ml', 'fl oz', 'g', 'oz', 'mm', 'inch']
     numOfIng = request.form['numIngredients']
     ingr_detail_map = dict()
+    flag_invalid_input = False
     for i in range(0, int(numOfIng)):
         # ingr_detail_map would have entries like:
         #   { 1 : ['strawberry', 'gram', 10 ],
@@ -47,12 +51,19 @@ def createRecipe():
         curr_purchase_link = "purchase_link_ing" + str(i);
         ingr_detail_map[i] = [request.form[curr_ing_name], request.form[curr_unit_name], 
         request.form[curr_amount], request.form[curr_purchase_link]]
+        print(i)
+        if request.form[curr_unit_name] not in allowed_unit_names:
+            flag_invalid_input = True
+
+    if flag_invalid_input == True:
+        error = "Please input a valid unit name in the Add Ingredients section! "
+        return render_template('create_recipe.html', error = error)
+
     
     cursor = conn.cursor()
     query = 'SELECT * FROM Recipe WHERE title = %s'
     cursor.execute(query, (title))
     data = cursor.fetchone()
-    error = None
     if(data):
         # if recipe with same title exists in DB, stop them from creating the recipe.
         error = "This recipe already exists"
@@ -176,7 +187,7 @@ def recipeInfo():
                 dest_ratio = cursor.fetchone()
                 destinationUnit = dest_ratio.get('destinationUnit')
                 ratio = dest_ratio.get('ratio')
-                print(ratio)
+                
                 foundRecipeIng[i]['amount'] = round((float(foundRecipeIng[i]['amount']) * float(ratio)), 2) ## need to be converted to float to work in python
                 foundRecipeIng[i]['unitName'] = destinationUnit
     
