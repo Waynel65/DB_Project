@@ -230,9 +230,11 @@ def recipeInfo():
         cursor.execute(query, rId)
         foundSteps = cursor.fetchall()
 
-        img_query = 'SELECT * FROM Recipe NATURAL LEFT JOIN reviewPicture WHERE recipeID = %s'
+        img_query = 'SELECT * FROM Recipe NATURAL LEFT JOIN recipePicture WHERE recipeID = %s'
         cursor.execute(img_query, rId)
-        recipe_img = cursor.fetchall()
+        results = cursor.fetchone()
+        recipe_img = results['pictureURL']
+        print(recipe_img)
 
         cursor.close()
         return render_template('recipeInfo.html', recipe=foundRecipe, recipeIngred = foundRecipeIng,

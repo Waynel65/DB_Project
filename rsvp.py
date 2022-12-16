@@ -8,8 +8,10 @@ def event_rsvp():
     gCreator = request.args.get('gCreator')
 
     cursor = conn.cursor();
-    query = 'select eid from Event where eid not IN(select eid from RSVP where userName = %s)' 
-    cursor.execute(query,(user))
+    ## list the events 'user' has not joined
+    query = 'select eid from Event where gName = %s and gCreator = %s and eid not IN(select eid from RSVP where userName = %s)' 
+
+    cursor.execute(query,(gName, gCreator, user))
     result = cursor.fetchall()
     print('---------------------------------')
     print(result)
