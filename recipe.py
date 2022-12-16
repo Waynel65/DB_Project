@@ -63,6 +63,7 @@ def createRecipe():
     query = 'SELECT * FROM Recipe WHERE title = %s'
     cursor.execute(query, (title))
     data = cursor.fetchone()
+
     if(data):
         # if recipe with same title exists in DB, stop them from creating the recipe.
         error = "This recipe already exists"
@@ -120,9 +121,15 @@ def createRecipe():
             data = cursor.fetchone()
             if data:
                 # Only add an entry to Restrictions table ONLY IF ingredient exists. 
-                ins = 'INSERT INTO Restrictions (iName, restrictionDesc) VALUES (%s, %s)'
-                cursor.execute(ins, (val[0], val[1])) # TODO: pass in the actual value for restrictionDesc!!!
-                conn.commit()
+
+                #Another restriction - check if duplicate PK exists, same name and same desc.
+                query2 = 'SELECT * FROM Restrictions WHERE iName = %s and restrictionDesc = %s'
+                cursor.execute(query2, (val[0], val[1]))
+                data2 = cursor.fetchone()
+                if not data2:
+                    ins = 'INSERT INTO Restrictions (iName, restrictionDesc) VALUES (%s, %s)'
+                    cursor.execute(ins, (val[0], val[1]))
+                    conn.commit()
 
         ####### Step Table #########
         for key, val in step_detail_map.items():
