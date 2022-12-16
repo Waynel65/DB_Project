@@ -4,15 +4,20 @@
 <body>
     <h2> List of groups you can join </h2>
     
-    {% for line in groups %}
-        <tr>
-            <td>{{line.gName}}</td>
-        </tr>
-    {% endfor %}
+
     <form action="/add_group" method="POST">
+
+    <select id="gName" name="gName" required>
+        {% for line in groups %}
+            
+                <option value="{{ line.gName }}">{{line.gName}}</option>
+            
+        {% endfor %}
+
+    </select>
         <div>
             
-            <input name="gName" type="text"/>
+            <!-- <input name="gName" type="text"/> -->
             <input type="submit" value = "Join this group" />
         </div>
         <!-- {% if error %}

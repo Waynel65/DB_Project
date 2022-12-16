@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request, session, url_for, redirect, flash
 from app import app, conn
 
+
+
 @app.route('/join_group')
 def join_group():
     user = session['username']
     cursor = conn.cursor()
-    query ='select gName from FlaskDemo.GroupMembership\
+    query ='select gName from FlaskDemo.`Group`\
         where gName not in \
-            (select gName from FlaskDemo.GroupMembership \
+            (select gName from FlaskDemo.GroupMembership\
                 where %s = memberName or %s = gCreator)'
     cursor.execute(query,(user,user))
     data = cursor.fetchall()
