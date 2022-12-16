@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, session, url_for, redirect, flash
 from app import app, conn
 
-@app.route('/event_rsvp', methods=['GET','POST'])
+@app.route('/event_rsvp/', methods=['GET','POST'])
 def event_rsvp():
     user = session['username']
     gName = request.args.get('gName')
@@ -12,7 +12,7 @@ def event_rsvp():
     cursor.execute(query,(user))
     result = cursor.fetchall()
     cursor.close()
-    return render_template("create_event.html",result=result)
+    return render_template("event_rsvp.html",result=result)
 
 @app.route('/rsvp/', methods=['GET','POST'])
 def rsvp():
