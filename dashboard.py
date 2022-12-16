@@ -25,17 +25,21 @@ def dashboard():
     #                      (Person JOIN GroupMembership where Person.userName = GroupMembership.memberName) as Merged \
     #                       WHERE %s = GroupMembership.memberName or %s = gCreator'
 
-    query_detect_group = 'SELECT gName, gCreator from \
+    query_detect_group = 'SELECT distinct gName, gCreator from \
                           GroupMembership \
                           WHERE %s = memberName or %s = gCreator'
 
     cursor.execute(query_detect_group, (username,username))
     group_name = cursor.fetchall()
+
+    event_query = 'select * from rsvp natural join event where username=%s'
+    cursor.execute(event_query, (username))
+    my_events = cursor.fetchall()
     cursor.close()
    
     creator_of_gName = creator_of_group()
     # print(creator_of_gName)
-    return render_template('dashboard.html', recipe_list=recipes, groups=group_name, creator_of_gName=creator_of_gName)
+    return render_template('dashboard.html', recipe_list=recipes, groups=group_name, creator_of_gName=creator_of_gName, my_events=my_events)
 
 
 @app.route('/settings')
