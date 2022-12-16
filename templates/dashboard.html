@@ -58,7 +58,7 @@
             <td>{{line.recipeID}}</a></td>
             <td>{{line.title}}</td>
             <td>{{line.numServings}}</td>
-            <td><button><a href="/recipeInfo/?recipeId={{line.recipeID}}">see details</a></button></td>
+            <td><button class="pure-button"><a href="/recipeInfo/?recipeId={{line.recipeID}}">see details</a></button></td>
         </tr>
     {% endfor %}
     </table>
@@ -76,11 +76,36 @@
             <tr>
                 <td>{{line.gName}}</td>
                 <td>{{line.gCreator}}</td>
-                <td><button><a href="/event_rsvp/?gName={{line.gName}}&gCreator={{line.gCreator}}">See Their Events</a></button></td>
+                <td><button class="pure-button"><a href="/event_rsvp/?gName={{line.gName}}&gCreator={{line.gCreator}}">See Their Events</a></button></td>
             </tr>
         {% endfor %}
         </table>
     {% endif %}
+
+    {% if my_events %}
+        <h3> My Events </h3>
+        <table>
+            <th>Event ID</th>
+            <th>Event Name</th>
+            <th>Event Description</th>
+            <th>Event Date</th>
+            <th>Group Name</th>
+            <th>Group Creator</th>
+            
+            
+        {% for line in my_events %}
+            <tr>
+                <td>{{line.eID}}</td>
+                <td>{{line.eName}}</td>
+                <td>{{line.eDesc}}</td>
+                <td>{{line.eDate}}</td>
+                <td>{{line.gName}}</td>
+                <td>{{line.gCreator}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+    <br>
     <button class="pure-button" onclick="location.href='/join_group'" type=""button>Join Group</button>
     <button class="pure-button" onclick="location.href='/create_group'" type=""button>Create Group</button>
     

@@ -12,42 +12,60 @@ def search_recipes():
     stars = request.form['stars']
     search_filter = request.form['filter']
 
-    order_by_addon = ""
-    if search_filter == 'alphabetical':
-        group_by_addon = 'order by title'
-    else:
-        group_by_addon = 'order by avg'
 
     cursor = conn.cursor();
     if stars == "any":
-        # query = 'Select DISTINCT recipeID, title, postedBy FROM \
-        #     Recipe NATURAL JOIN RecipeTag \
-        #     WHERE title like %s \
-        #     and tagText like %s' 
+        results = any_stars(search_input, tag, search_filter)
+    else:
+        results = stars_specified(search_input, tag, stars, search_filter)
+    return render_template('search.html', results=results)
 
+
+
+
+def any_stars(search_input, tag, search_filter):
+    cursor = conn.cursor();
+    if search_filter == 'alphabetical':
         query = "select distinct recipeID, title, IFNULL(avg(stars), 'N/A') as avg \
                 from Recipe NATURAL JOIN RecipeTag natural left JOIN Review \
                 WHERE title like %s and tagText like %s \
-                group by recipeID, title"
-        # query += order_by_addon
-        
-        print(query)
-        search_input = '%{}%'.format(search_input)
-        tag = '%{}%'.format(tag)
-        cursor.execute(query, (search_input, tag))
+                group by recipeID, title \
+                order by title"
+    else:
+        query = "select distinct recipeID, title, IFNULL(avg(stars), 'N/A') as avg \
+                from Recipe NATURAL JOIN RecipeTag natural left JOIN Review \
+                WHERE title like %s and tagText like %s \
+                group by recipeID, title \
+                order by avg"
+    search_input = '%{}%'.format(search_input)
+    tag = '%{}%'.format(tag)
+    cursor.execute(query, (search_input, tag))       
+
+    results = cursor.fetchall()
+    cursor.close()
+    return results
+
+def stars_specified(search_input, tag, stars, search_filter):
+    cursor = conn.cursor();
+    if search_filter == 'alphabetical':
+        query = 'select DISTINCT recipeID, title, postedBy, AVG(stars) as avg \
+                from Recipe NATURAL JOIN RecipeTag NATURAL JOIN Review \
+                WHERE title like %s and tagText like %s \
+                group by recipeID, title, postedBy \
+                having AVG(stars) >= %s \
+                order by title'
     else:
         query = 'select DISTINCT recipeID, title, postedBy, AVG(stars) as avg \
                 from Recipe NATURAL JOIN RecipeTag NATURAL JOIN Review \
                 WHERE title like %s and tagText like %s \
                 group by recipeID, title, postedBy \
-                having AVG(stars) >= %s '
-        search_input = '%{}%'.format(search_input)
-        tag = '%{}%'.format(tag)
-        cursor.execute(query, (search_input, tag, stars))
+                having AVG(stars) >= %s \
+                order by avg'
 
+    search_input = '%{}%'.format(search_input)
+    tag = '%{}%'.format(tag)
+    cursor.execute(query, (search_input, tag, stars))       
 
     results = cursor.fetchall()
-    # results = cursor.fetchall()
     cursor.close()
-    return render_template('search.html', results=results)
-
+    return results
