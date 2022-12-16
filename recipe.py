@@ -177,7 +177,8 @@ def recipeInfo():
             query = 'SELECT * FROM Restrictions where iName = %s'
             cursor.execute(query, ingred["iName"])
             foundRestr = cursor.fetchone()
-            listRestrictions.append(foundRestr)
+            if foundRestr is not None:
+                listRestrictions.append(foundRestr)
             
             #if not unit_hashmap[unit_pref]: continue
             if not session.get('unit_pref'): continue
