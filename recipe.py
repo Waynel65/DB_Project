@@ -169,6 +169,7 @@ def recipeInfo():
             foundRestr = cursor.fetchone()
             listRestrictions.append(foundRestr)
             
+            if not unit_hashmap[unit_pref]: continue
             if ingred['unitName'] not in unit_hashmap[unit_pref]: ## if unitName does not match the pref of user
                 query = 'SELECT destinationUnit, ratio FROM UnitConversion \
                         WHERE sourceUnit = %s'

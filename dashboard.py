@@ -1,6 +1,15 @@
 from flask import Flask, render_template, request, session, url_for, redirect, flash
 from app import app, conn
 
+def creator_of_group():
+    username = session['username']
+    cursor = conn.cursor();
+    query = 'SELECT gName FROM FlaskDemo.Group where gCreator = %s'
+    cursor.execute(query, username)
+    gName = cursor.fetchone()
+    if gName: return gName['gName']
+
+
 @app.route('/dashboard')
 def dashboard():
     if not session.get('user_is_logged_in'):
@@ -16,13 +25,17 @@ def dashboard():
     #                      (Person JOIN GroupMembership where Person.userName = GroupMembership.memberName) as Merged \
     #                       WHERE %s = GroupMembership.memberName or %s = gCreator'
 
-    query_detect_group = 'SELECT gName, gCreator, eID FROM \
-                          GroupMembership NATURAL JOIN Event \
+    query_detect_group = 'SELECT gName, gCreator from \
+                          GroupMembership \
                           WHERE %s = memberName or %s = gCreator'
 
+    cursor.execute(query_detect_group, (username,username))
     group_name = cursor.fetchall()
     cursor.close()
-    return render_template('dashboard.html', recipe_list=recipes, groups=group_name)
+   
+    creator_of_gName = creator_of_group()
+    # print(creator_of_gName)
+    return render_template('dashboard.html', recipe_list=recipes, groups=group_name, creator_of_gName=creator_of_gName)
 
 
 @app.route('/settings')
@@ -39,6 +52,7 @@ def set_preferences():
     session['unit_pref'] = unit ## either metric or imperial
 
     return redirect('/dashboard')
+
 
 """
     often seen units in recipes:

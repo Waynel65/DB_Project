@@ -71,19 +71,22 @@
         <table>
             <th>Group Name</th>
             <th>Group Creator</th>
-            <th>Number of Servings</th>
 
         {% for line in groups %}
             <tr>
                 <td>{{line.gName}}</td>
                 <td>{{line.gCreator}}</td>
-                <td>{{line.eID}}</td>
+                <td><button><a href="/event_rsvp/?gName={{line.gName}}&gCreator={{line.gCreator}}">See Their Events</a></button></td>
             </tr>
         {% endfor %}
         </table>
     {% endif %}
     <button class="pure-button" onclick="location.href='/join_group'" type=""button>Join Group</button>
     <button class="pure-button" onclick="location.href='/create_group'" type=""button>Create Group</button>
+    
+    {% if creator_of_gName %}
+    <button class="pure-button"><a href="/create_event/?gName={{creator_of_gName}}">Create Event</a></button>
+    {% endif %}
 <br>
 <div>
     <form class="pure-form pure-form-stacked" id="logout" action="/logoutAuth" method="POST">

@@ -6,7 +6,19 @@ def review():
     # getting args from URL: https://stackoverflow.com/questions/40369016/using-request-args-in-flask-for-a-variable-url
     recipeID = request.args.get('recipeId')
     title = request.args.get('title')
-    return render_template('review.html', recipeID=recipeID, title=title)
+    username = session.get('username')
+    # when rendering this page, should display a list of existing reviews
+
+    cursor = conn.cursor();
+    query = 'SELECT * FROM Review WHERE recipeID = %s'
+    cursor.execute(query, (int(recipeID)))
+    reviews = cursor.fetchall()
+
+    query_2 = 'select * from Review where recipeID = %s and username = %s'
+    cursor.execute(query_2, (int(recipeID), username))
+    reviewed = cursor.fetchone()
+    cursor.close()
+    return render_template('review.html', recipeID=recipeID, title=title, reviews=reviews, reviewed=reviewed)
 
 @app.route('/review_recipe', methods=['POST', 'GET'])
 def review_recipe():
