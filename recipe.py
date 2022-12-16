@@ -61,9 +61,15 @@ def createRecipe():
         
         if request.form[curr_unit_name] not in allowed_unit_names:
             flag_invalid_input = True
+        # Check if Amount is a POSITIVE INTEGER
+        if request.form[curr_amount].isnumeric() == False:
+            flag_invalid_input = True
+        else:
+            if int(request.form[curr_amount]) < 1:
+                flag_invalid_input = True
 
     if flag_invalid_input == True:
-        error = "Please input a valid unit name in the Add Ingredients section! "
+        error = "Please input a valid input in the Add Ingredients section! "
         return render_template('create_recipe.html', error = error)
 
     
