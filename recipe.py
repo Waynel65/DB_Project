@@ -22,6 +22,14 @@ def createRecipe():
     username = session['username']
     title = request.form['title']
     numServings = request.form['numServings']
+    # check if numServings is positive integer!!!!
+    if numServings.isnumeric() == False:
+        error = "Please input a positive integer for numServings section! "
+        return render_template('create_recipe.html', error = error)
+    if int(numServings) < 1:
+        error = "Please input a positive integer for numServings section! "
+        return render_template('create_recipe.html', error = error)
+
     numDietRestr = request.form['numDietaryRestrictions']
     recipeTags = request.form['recipeTags']
     numSteps = request.form['numSteps']
