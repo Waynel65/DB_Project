@@ -10,6 +10,7 @@ from search import *
 from review import *
 from create_event import *
 from werkzeug.utils import secure_filename
+from rsvp import *
 
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
