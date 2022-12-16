@@ -137,8 +137,13 @@ def createRecipe():
             ins = 'INSERT INTO Step (stepNo, recipeID, sDesc) VALUES (%s, %s, %s)'
             cursor.execute(ins, (str(key), currRecipeID, val[0]))
             conn.commit()
+        
+        ### upload image URL ###
+        img_url = request.form['recipe_img_url']
+        insert_img_query = 'INSERT INTO RecipePicture (recipeID, pictureURL) values (%s, %s)'
+        cursor.execute(insert_img_query, (currRecipeID, img_url))
 
-
+        conn.commit()
         cursor.close()
         return redirect('/dashboard')
 
@@ -217,10 +222,14 @@ def recipeInfo():
         cursor.execute(query, rId)
         foundSteps = cursor.fetchall()
 
+        img_query = 'SELECT * FROM Recipe NATURAL LEFT JOIN reviewPicture WHERE recipeID = %s'
+        cursor.execute(img_query, rId)
+        recipe_img = cursor.fetchall()
+
         cursor.close()
         return render_template('recipeInfo.html', recipe=foundRecipe, recipeIngred = foundRecipeIng,
         recipeTags = foundRecipeTags, listIngredients = listIngredients, listRestrictions = listRestrictions,
-        steps=foundSteps)
+        steps=foundSteps, recipe_img=recipe_img)
     else:
         cursor.close()
         error = 'Invalid Recipe ID.'

@@ -10,7 +10,7 @@ def review():
     # when rendering this page, should display a list of existing reviews
 
     cursor = conn.cursor();
-    query = 'SELECT * FROM Review WHERE recipeID = %s'
+    query = 'SELECT * FROM Review NATURAL LEFT JOIN reviewPicture WHERE recipeID = %s'
     cursor.execute(query, (int(recipeID)))
     reviews = cursor.fetchall()
 
@@ -27,11 +27,15 @@ def review_recipe():
     rev_title = request.form['rev_title']
     stars = request.form['stars']
     rev_desc = request.form['rev_desc']
+    img_url = request.form['review_img_url']
 
     cursor = conn.cursor();
     query = 'INSERT INTO Review (userName, recipeID, revTitle, revDesc, stars) \
             values (%s, %s, %s, %s, %s) '
     cursor.execute(query, (user, recipeID, rev_title, rev_desc, stars))
+    insert_img_query = 'INSERT INTO ReviewPicture (userName, recipeID, pictureURL) values (%s, %s, %s)'
+
+    cursor.execute(insert_img_query, (user, recipeID, img_url))
     conn.commit()
     cursor.close()
     return redirect(url_for('dashboard'))

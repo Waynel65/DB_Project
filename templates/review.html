@@ -14,6 +14,7 @@
         <th>Title</th>
         <th>Description</th>
         <th>Number of Stars</th>
+        <th>Review Image</th>
 
     {% for line in reviews %}
         <tr>
@@ -22,6 +23,11 @@
             <td>{{line.revTitle}}</td>
             <td>{{line.revDesc}}</td>
             <td>{{line.stars}}</td>
+            {% if line.pictureURL %}
+            <td><a href="{{line.pictureURL}}">See Review Image</a></td>
+            {% else %}
+            <td>N/A</td>
+            {% endif %}
             <!-- <td><button><a href="/recipeInfo/?recipeId={{line.recipeID}}">see details</a></button></td> -->
         </tr>
     {% endfor %}
@@ -48,6 +54,8 @@
             </select>
             <br>
             <input id="textbox" type="text" name = "rev_desc" placeholder="Write a review"  />
+            <br>
+            <input type="url" name="review_img_url" placeholder="Enter an image URL for your review"/>
             <br>
             <input type="submit" value = "Submit" />
             <!-- {% if error %}
