@@ -19,7 +19,6 @@ def create_recipe():
 @app.route('/createRecipe', methods=['GET', 'POST'])
 def createRecipe():
     error = None
-    print("ARE YOU SENDING???? ---------")
     username = session['username']
     title = request.form['title']
     numServings = request.form['numServings']
@@ -51,7 +50,7 @@ def createRecipe():
         curr_purchase_link = "purchase_link_ing" + str(i);
         ingr_detail_map[i] = [request.form[curr_ing_name], request.form[curr_unit_name], 
         request.form[curr_amount], request.form[curr_purchase_link]]
-        print(i)
+        
         if request.form[curr_unit_name] not in allowed_unit_names:
             flag_invalid_input = True
 
@@ -180,7 +179,8 @@ def recipeInfo():
             foundRestr = cursor.fetchone()
             listRestrictions.append(foundRestr)
             
-            if not unit_hashmap[unit_pref]: continue
+            #if not unit_hashmap[unit_pref]: continue
+            if not session.get('unit_pref'): continue
             if ingred['unitName'] not in unit_hashmap[unit_pref]: ## if unitName does not match the pref of user
                 query = 'SELECT destinationUnit, ratio FROM UnitConversion \
                         WHERE sourceUnit = %s'
