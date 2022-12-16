@@ -2,9 +2,6 @@
 
 <body>
 
-
-    <form action="/event_rsvp" method="POST">
-
     {% if result %}
     <h3> Events you can join</h3>
     <table>
@@ -12,8 +9,8 @@
 
     {% for line in result %}
         <tr>
-            <td>{{line.eID}}</td>
-            <td><button><a href="/event_rsvp/?eID={{line.eID}}">RSVP</a></button></td>
+            <td>{{line.eid}}</td>
+            <td><button><a href="/rsvp/?eid={{line.eid}}">RSVP</a></button></td>
         </tr>
     {% endfor %}
     </table>

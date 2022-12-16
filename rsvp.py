@@ -8,19 +8,21 @@ def event_rsvp():
     gCreator = request.args.get('gCreator')
 
     cursor = conn.cursor();
-    query = 'select eid from RSVP where %s != userName' 
+    query = 'select eid from Event where eid not IN(select eid from RSVP where userName = %s)' 
     cursor.execute(query,(user))
     result = cursor.fetchall()
+    print('---------------------------------')
+    print(result)
     cursor.close()
     return render_template("event_rsvp.html",result=result)
 
 @app.route('/rsvp/', methods=['GET','POST'])
 def rsvp():
     user = session['username']
-    eventID=request.args.get('eID')
+    eventID=request.args.get('eid')
     cursor = conn.cursor();
-    query = 'INSERT INTO FlaskDemo.RSVP (username, eID) values (%s,%s)' 
-    cursor.execute(query,(user,eventID))
+    query = 'INSERT INTO FlaskDemo.RSVP (username, eID, response) values (%s,%s,%s)' 
+    cursor.execute(query,(user,eventID,'1'))
     conn.commit()
     cursor.close()
     return redirect('/dashboard')
