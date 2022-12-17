@@ -3,6 +3,8 @@ from app import app, conn
 
 @app.route('/event_rsvp/', methods=['GET','POST'])
 def event_rsvp():
+    if not session.get('user_is_logged_in'):
+        return redirect('/login')
     user = session['username']
     gName = request.args.get('gName')
     gCreator = request.args.get('gCreator')

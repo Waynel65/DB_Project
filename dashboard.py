@@ -47,7 +47,8 @@ def settings():
     """
         will render a setting page that allows user to set their preference
     """
-
+    if not session.get('user_is_logged_in'):
+        return redirect('/login')
     return render_template('settings.html')
 
 @app.route('/set_preferences', methods=['GET','POST'])

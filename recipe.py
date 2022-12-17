@@ -7,6 +7,8 @@ def post_recipe():
 
 @app.route('/create_recipe')
 def create_recipe():
+    if not session.get('user_is_logged_in'):
+        return redirect('/login')
     username = session['username']
     # cursor = conn.cursor();
     # query = 'SELECT * FROM Recipe where postedBy = %s'
@@ -171,7 +173,8 @@ def createRecipe():
 
 @app.route('/recipeInfo/')
 def recipeInfo():
-
+    if not session.get('user_is_logged_in'):
+        return redirect('/login')
     rId = request.args.get('recipeId')
     unit_pref = session.get('unit_pref') ## could be "metric" or "imperial"
     metric_units = set(['ml', 'mm', 'g'])

@@ -5,6 +5,8 @@ from app import app, conn
 
 @app.route('/create_group', methods=['GET','POST'])
 def create_group():
+    if not session.get('user_is_logged_in'):
+        return redirect('/login')
     return render_template('create_group.html')
 
 @app.route('/group_detail', methods=['GET','POST'])

@@ -7,6 +7,8 @@ def search():
 
 @app.route('/search_recipes', methods=["POST", "GET"])
 def search_recipes():
+    if not session.get('user_is_logged_in'):
+        return redirect('/login')
     search_input = request.form['search_input']
     tag = request.form['tag']
     stars = request.form['stars']

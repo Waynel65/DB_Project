@@ -5,6 +5,8 @@ from app import app, conn
 
 @app.route('/join_group')
 def join_group():
+    if not session.get('user_is_logged_in'):
+        return redirect('/login')
     user = session['username']
     cursor = conn.cursor()
     query ='select gName from FlaskDemo.`Group`\

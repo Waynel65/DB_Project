@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, session, url_for, redirect, f
 from app import app, conn
 @app.route('/create_event/', methods=['GET','POST'])
 def create_event():
+    if not session.get('user_is_logged_in'):
+        return redirect('/login')
     GroupName = request.args.get('gName')
     print("XXX",GroupName)
     return render_template("create_event.html", gName=GroupName)
